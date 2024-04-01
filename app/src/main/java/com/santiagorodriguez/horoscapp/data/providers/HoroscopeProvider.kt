@@ -1,0 +1,24 @@
+package com.santiagorodriguez.horoscapp.data.providers
+
+import com.santiagorodriguez.horoscapp.domain.model.HoroscopeInfo
+import com.santiagorodriguez.horoscapp.domain.model.HoroscopeInfo.*
+import javax.inject.Inject
+
+class HoroscopeProvider @Inject constructor(){
+    fun getHoroscopes(): List<HoroscopeInfo> {
+        return listOf(
+            Aries,
+            Tauro,
+            Gemini,
+            Cancer,
+            Leo,
+            Virgo,
+            Libra,
+            Scorpio,
+            Sagittarius,
+            Capricorn,
+            Aquarius,
+            Pisces
+        )
+    }
+}
