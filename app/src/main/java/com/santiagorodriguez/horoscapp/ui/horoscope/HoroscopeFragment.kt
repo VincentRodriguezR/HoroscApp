@@ -4,15 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.santiagorodriguez.horoscapp.databinding.FragmentHoroscopeBinding
 import com.santiagorodriguez.horoscapp.domain.model.HoroscopeInfo
+import com.santiagorodriguez.horoscapp.domain.model.HoroscopeInfo.*
+import com.santiagorodriguez.horoscapp.domain.model.HoroscopeModel
 import com.santiagorodriguez.horoscapp.ui.horoscope.adapter.HoroscopeAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -33,8 +37,25 @@ class HoroscopeFragment : Fragment() {
     }
 
     private fun initList() {
-        horoscopeAdapter = HoroscopeAdapter()
-
+        horoscopeAdapter = HoroscopeAdapter(onItemSelected = {
+            val type = when(it){
+                Aquarius -> HoroscopeModel.Aquarius
+                Aries -> HoroscopeModel.Aries
+                Cancer -> HoroscopeModel.Cancer
+                Capricorn -> HoroscopeModel.Capricorn
+                Gemini -> HoroscopeModel.Gemini
+                Leo -> HoroscopeModel.Leo
+                Libra -> HoroscopeModel.Libra
+                Pisces -> HoroscopeModel.Pisces
+                Sagittarius -> HoroscopeModel.Sagittarius
+                Scorpio -> HoroscopeModel.Scorpio
+                Tauro -> HoroscopeModel.Taurus
+                Virgo -> HoroscopeModel.Virgo
+            }
+            findNavController().navigate(
+                HoroscopeFragmentDirections.actionHoroscopeFragmentToHoroscopeDetailActivity(type)
+            )
+        })
         binding.rvHoroscope.apply {
             layoutManager = GridLayoutManager(context, 2)
             adapter = horoscopeAdapter
