@@ -8,7 +8,7 @@ class HoroscopeProvider @Inject constructor(){
     fun getHoroscopes(): List<HoroscopeInfo> {
         return listOf(
             Aries,
-            Tauro,
+            Taurus,
             Gemini,
             Cancer,
             Leo,

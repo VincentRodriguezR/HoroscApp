@@ -12,7 +12,6 @@ class RepositoryImp @Inject constructor(private val apiService: HoroscopeApiServ
         runCatching { apiService.getHoroscope(sign) }
             .onSuccess { return it.toDomain() }
             .onFailure { Log.i("Error", "Ha ocurrido un error ${it.message}") }
-
         return null
     }
 }

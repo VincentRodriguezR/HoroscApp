@@ -1,19 +1,18 @@
 package com.santiagorodriguez.horoscapp.ui.detail
 
+import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.navArgs
 import com.santiagorodriguez.horoscapp.R
 import com.santiagorodriguez.horoscapp.databinding.ActivityHoroscopeDetailBinding
-import com.santiagorodriguez.horoscapp.databinding.ActivityMainBinding
+import com.santiagorodriguez.horoscapp.domain.model.HoroscopeModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -26,13 +25,18 @@ class HoroscopeDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHoroscopeDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         initUI()
+        initListener()
+        horoscopeDetailViewModel.getHoroscope(args.type)
 
     }
 
     private fun initUI() {
         initUIState()
+    }
+
+    private fun initListener(){
+        binding.ivBack.setOnClickListener{onBackPressed()}
     }
 
     private fun initUIState() {
@@ -42,19 +46,38 @@ class HoroscopeDetailActivity : AppCompatActivity() {
                     when(it){
                         is HoroscopeDetailState.Error -> errorState()
                         HoroscopeDetailState.Loading -> loadingState()
-                        is HoroscopeDetailState.Success -> successState()
+                        is HoroscopeDetailState.Success -> successState(it)
                     }
                 }
             }
         }
     }
 
-    private fun successState() {
-        TODO("Not yet implemented")
+    private fun successState(state: HoroscopeDetailState.Success) {
+        binding.pb.isVisible = false
+        binding.tvTitle.text = state.sign
+        binding.tvBody.text = state.prediction
+
+        val image = when(state.horoscopeModel){
+            HoroscopeModel.Aries -> R.drawable.detail_aries
+            HoroscopeModel.Taurus -> R.drawable.detail_taurus
+            HoroscopeModel.Gemini -> R.drawable.detail_gemini
+            HoroscopeModel.Cancer -> R.drawable.detail_cancer
+            HoroscopeModel.Leo -> R.drawable.detail_leo
+            HoroscopeModel.Virgo -> R.drawable.detail_virgo
+            HoroscopeModel.Libra -> R.drawable.detail_libra
+            HoroscopeModel.Scorpio -> R.drawable.detail_scorpio
+            HoroscopeModel.Sagittarius -> R.drawable.detail_sagittarius
+            HoroscopeModel.Capricorn -> R.drawable.detail_capricorn
+            HoroscopeModel.Aquarius -> R.drawable.detail_aquarius
+            HoroscopeModel.Pisces -> R.drawable.detail_pisces
+        }
+
+        binding.ivDetail.setImageResource(image)
     }
 
     private fun errorState() {
-        TODO("Not yet implemented")
+        binding.pb.isVisible = false
     }
 
     private fun loadingState() {
